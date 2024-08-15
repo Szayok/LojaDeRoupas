@@ -1,12 +1,14 @@
 package app.service;
 
 import java.util.List;
+
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import app.entity.Cliente;
 import app.entity.Produto;
 import app.entity.Venda;
 import app.exception.ValorMaximoException;
@@ -20,9 +22,14 @@ public class VendaService {
 
 	@Autowired
 	private ProdutoService produtoService;
+	
+	@Autowired
+	private ClienteService clienteService;
 
 	public String save(Venda venda) {
 		Double total = 0.0;
+		
+		Cliente cliente = clienteService.findById(venda.getCliente().getId());
 
 		for (int i = 0; i < venda.getProduto().size(); i++) {
 			if (venda.getProduto().get(i) != null) {
@@ -33,15 +40,15 @@ public class VendaService {
 			}
 		}
 		
-		if (venda.getCliente().getIdade() < 18 && total > 500) {
+		if (cliente.getIdade() < 18 && total > 500) {
+		    System.out.println("Idade do cliente: " + venda.getCliente().getIdade());
 		    throw new ValorMaximoException("Menor de idade não pode comprar acima de 500 reais");
+		}else {
+			venda.setTotal(total);
+
+			this.vendaRepository.save(venda);
+			return "Venda cadastrado com sucesso";
 		}
-
-		
-		venda.setTotal(total);
-
-		this.vendaRepository.save(venda);
-		return "Venda cadastrado com sucesso";
 	}
 
 	public String update(Venda venda, Long id) {
