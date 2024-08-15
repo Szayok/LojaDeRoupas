@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import app.entity.Produto;
 import app.entity.Venda;
+import app.exception.ValorMaximoException;
 import app.repository.VendaRepository;
 
 @Service
@@ -31,7 +32,12 @@ public class VendaService {
 				total += venda.getProduto().get(i).getPreco();
 			}
 		}
+		
+		if (venda.getCliente().getIdade() < 18 && total > 500) {
+		    throw new ValorMaximoException("Menor de idade não pode comprar acima de 500 reais");
+		}
 
+		
 		venda.setTotal(total);
 
 		this.vendaRepository.save(venda);

@@ -15,6 +15,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +32,7 @@ public class Venda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+	@NotBlank
     private String observacao;
 
     private Double total;
@@ -37,13 +40,14 @@ public class Venda {
     @ManyToMany(cascade = CascadeType.MERGE)
     @JsonIgnoreProperties("venda")
     @JoinTable(name="Venda_Produto")
+    @NotEmpty
     private List<Produto> produto;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, optional = true)
     @JsonIgnoreProperties("venda")
     private Funcionario funcionario;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, optional = false)
     @JsonIgnoreProperties("venda")
     private Cliente cliente;
 	
