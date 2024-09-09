@@ -47,7 +47,7 @@ public class VendaService {
 			venda.setTotal(total);
 
 			this.vendaRepository.save(venda);
-			return "Venda cadastrado com sucesso";
+			return "Venda cadastrada com sucesso";
 		}
 	}
 

@@ -57,7 +57,7 @@ public class VendaController {
 		try {
 			this.vendaService.delete(id);
 
-			return new ResponseEntity<String>("Deletado com sucesso!", HttpStatus.OK);
+			return new ResponseEntity<String>("Venda deletada com sucesso", HttpStatus.OK);
 		} catch (Exception e) {
 
 			return new ResponseEntity<>("Não encontrado", HttpStatus.BAD_REQUEST);
